@@ -6,40 +6,31 @@ export default function Home() {
 	const [players, setPlayers] = useState([]);
 	const [round, setRound] = useState(1);
 	const [showResetModal, setShowResetModal] = useState(false);
-	const [dots, setDots] = useState(".");
 
 	function capitalizeFirstLetter(string) {
 		return string.charAt(0).toUpperCase() + string.slice(1);
 	}
 
 	useEffect(() => {
-		const interval = setInterval(() => {
-			setDots((prevDots) => {
-				if (prevDots.length === 3) {
-					return "..."; // Display three dots
-				} else if (prevDots === "...") {
-					return "."; // Reset after a delay
-				} else {
-					return prevDots + ".";
-				}
-			});
-		}, 500); // Interval for adding dots
-
-		return () => {
-			clearInterval(interval);
-		};
-	}, [dots]);
-
-	useEffect(() => {
 		const storedPlayers = localStorage.getItem("players");
 		if (storedPlayers) {
 			setPlayers(JSON.parse(storedPlayers));
+		}
+
+		const storedRoundData = localStorage.getItem("rounds");
+		if (storedRoundData) {
+			const parsedRoundData = JSON.parse(storedRoundData);
+			setRound(parsedRoundData.currentRound);
 		}
 	}, []);
 
 	useEffect(() => {
 		localStorage.setItem("players", JSON.stringify(players));
 	}, [players]);
+
+	useEffect(() => {
+		localStorage.setItem("rounds", JSON.stringify({ currentRound: round }));
+	}, [round]);
 
 	const handleAddPlayer = (playerName) => {
 		if (!playerName) return;
@@ -90,17 +81,17 @@ export default function Home() {
 	};
 
 	return (
-		<div className="m-2 flex flex-col flex-wrap justify-center items-center">
+		<div className="p-2 flex flex-col flex-wrap justify-center items-center bg-gradient-to-br from-slate-800 to-slate-900 h-screen w-screen overflow-auto">
 			<h1 className="text-3xl font-semibold text-slate-200">
 				Golf Card Game{" "}
-				<span className=" font-semibold text-green-500">
-					{players.length < 2
-						? "- Add two or more players to begin" + dots
-						: ""}
-				</span>
 			</h1>
+			<span className=" font-semibold text-green-500 text-xs">
+				{players.length < 2
+					? "Please add two or more players to begin"
+					: ""}
+			</span>
 
-			<div className=" flex justify-start space-x-4 items-start mt-4">
+			<div className="flex justify-start items-start mt-4">
 				<div className="mx-2 p-4 rounded shadow space-y-2 inline-flex flex-col bg-slate-900">
 					<div className="bg-slate-700 text-white p-2 text-xl rounded flex justify-center">
 						{round ? <span>Round {round}</span> : ""}
@@ -115,7 +106,6 @@ export default function Home() {
 							</p>
 						))}
 					</div>
-
 					<button
 						className={`px-4 py-2 bg-blue-500 text-slate-900 rounded hover:bg-blue-600 text-2xl font-bold ${
 							players.length < 2 ? "hidden" : "cursor-pointer"
@@ -124,6 +114,15 @@ export default function Home() {
 							// check if all of the users got a score for the current round
 							if (isRoundComplete()) {
 								setRound((prevRound) => prevRound + 1);
+								// set new localStorage data
+								localStorage.setItem(
+									"players",
+									JSON.stringify(players)
+								);
+							} else {
+								alert(
+									"Please enter a score for each player before continuing..."
+								);
 							}
 						}}>
 						Next Turn
@@ -151,7 +150,8 @@ export default function Home() {
 						Reset Game
 					</button>
 				</div>
-				<div className="flex flex-col max-w-7xl">
+
+				<div className="flex flex-col items-start justify-center rounded shadow bg-slate-900">
 					{players.map((player, playerIndex) => (
 						<div
 							key={playerIndex}
