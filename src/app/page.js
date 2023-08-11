@@ -218,8 +218,8 @@ export default function Home() {
 											(_, index) => (
 												<input
 													key={index}
-													className="rounded shadow w-14 bg-slate-800 p-2 custom-animation"
-													type="number"
+													className="rounded shadow w-14 bg-slate-800 p-2 custom-animation mb-1"
+													type="text"
 													placeholder={`R${
 														index + 1
 													}`}
