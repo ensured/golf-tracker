@@ -8,6 +8,10 @@ export default function Home() {
 	const [showResetModal, setShowResetModal] = useState(false);
 	const [dots, setDots] = useState(".");
 
+	function capitalizeFirstLetter(string) {
+		return string.charAt(0).toUpperCase() + string.slice(1);
+	}
+
 	useEffect(() => {
 		const interval = setInterval(() => {
 			setDots((prevDots) => {
@@ -86,7 +90,7 @@ export default function Home() {
 	};
 
 	return (
-		<div className="m-2">
+		<div className="m-2 flex flex-col flex-wrap justify-center items-center">
 			<h1 className="text-3xl font-semibold text-slate-200">
 				Golf Card Game{" "}
 				<span className=" font-semibold text-green-500">
@@ -96,7 +100,7 @@ export default function Home() {
 				</span>
 			</h1>
 
-			<div className="w-full flex justify-start space-x-4 items-start mt-4">
+			<div className=" flex justify-start space-x-4 items-start mt-4">
 				<div className="mx-2 p-4 rounded shadow space-y-2 inline-flex flex-col bg-slate-900">
 					<div className="bg-slate-700 text-white p-2 text-xl rounded flex justify-center">
 						{round ? (
@@ -116,7 +120,7 @@ export default function Home() {
 						</h2>
 						{calculateCurrentTotalScores().map((total, index) => (
 							<p key={index} className="text-lg text-slate-200 ">
-								{players[index].name}: {total}
+								<strong>{players[index].name}</strong>: {total}
 							</p>
 						))}
 					</div>
@@ -156,13 +160,13 @@ export default function Home() {
 						Reset Game
 					</button>
 				</div>
-				<div className="flex flex-col">
+				<div className="flex flex-col max-w-7xl">
 					{players.map((player, playerIndex) => (
 						<div
 							key={playerIndex}
 							className="p-2 rounded shadow bg-slate-900 mb-2">
-							<span className="text-lg font-semibold mb-2 text-green-600">
-								{player.name}
+							<span className="text-lg font-semibold mb-2 text-green-600 p-1 rounded">
+								{capitalizeFirstLetter(player.name)}{" "}
 							</span>
 							<div className="flex break-words flex-wrap space-x-1 justify-center items-center">
 								{Array.from({ length: round }, (_, index) => (
