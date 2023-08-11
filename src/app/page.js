@@ -6,6 +6,17 @@ export default function Home() {
 	const [players, setPlayers] = useState([]);
 	const [round, setRound] = useState(1);
 
+	useEffect(() => {
+		const storedPlayers = localStorage.getItem("players");
+		if (storedPlayers) {
+			setPlayers(JSON.parse(storedPlayers));
+		}
+	}, []);
+
+	useEffect(() => {
+		localStorage.setItem("players", JSON.stringify(players));
+	}, [players]);
+
 	const handleAddPlayer = (playerName) => {
 		setPlayers((prevPlayers) => [
 			...prevPlayers,
@@ -27,6 +38,12 @@ export default function Home() {
 
 	const calculateCurrentTotalScores = () => {
 		return players.map((player) => calculateTotalScore(player.scores));
+	};
+
+	const resetGame = () => {
+		localStorage.removeItem("players");
+		setPlayers([]);
+		setRound(1);
 	};
 
 	return (
@@ -70,20 +87,26 @@ export default function Home() {
 			</div>
 			<div className="mt-6 flex space-x-4">
 				<button
-					className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+					className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 text-2xl"
+					disabled={players.length === 0}
 					onClick={() => setRound(round + 1)}>
 					Next Round
 				</button>
 				<button
-					className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+					className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 text-2xl"
 					onClick={() =>
 						handleAddPlayer(prompt("Enter player name"))
 					}>
 					Add Player
 				</button>
+				<button
+					onClick={resetGame}
+					className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 ml-4 text-2xl">
+					Reset Game
+				</button>
 			</div>
-			<div className="mt-6">
-				<h2 className="text-xl font-semibold text-slate-900">
+			<div className="mt-6 bg-white p-4 rounded shadow space-y-2">
+				<h2 className="font-semibold text-slate-800 text-3xl underline">
 					Total Scores
 				</h2>
 				{calculateCurrentTotalScores().map((total, index) => (
