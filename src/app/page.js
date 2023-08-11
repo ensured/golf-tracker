@@ -87,7 +87,7 @@ export default function Home() {
 					Total Scores
 				</h2>
 				{calculateCurrentTotalScores().map((total, index) => (
-					<p key={index} className="text-lg">
+					<p key={index} className="text-lg text-slate-700">
 						{players[index].name}: {total}
 					</p>
 				))}
