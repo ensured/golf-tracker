@@ -103,16 +103,7 @@ export default function Home() {
 			<div className=" flex justify-start space-x-4 items-start mt-4">
 				<div className="mx-2 p-4 rounded shadow space-y-2 inline-flex flex-col bg-slate-900">
 					<div className="bg-slate-700 text-white p-2 text-xl rounded flex justify-center">
-						{round ? (
-							<>
-								Round ‎
-								<span className="font-bold text-green-500">
-									{round}
-								</span>
-							</>
-						) : (
-							""
-						)}
+						{round ? <span>Round {round}</span> : ""}
 					</div>
 					<div id="totalScores">
 						<h2 className="font-semibold text-slate-200 text-3xl underline">
