@@ -7,7 +7,6 @@ export default function Home() {
 	const [round, setRound] = useState(1);
 	const [showResetModal, setShowResetModal] = useState(false);
 	const [dots, setDots] = useState(".");
-	const { width, height } = useWindowSize();
 
 	useEffect(() => {
 		const interval = setInterval(() => {
