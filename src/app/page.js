@@ -12,6 +12,14 @@ export default function Home() {
 		return string.charAt(0).toUpperCase() + string.slice(1);
 	}
 
+	const isWinner = (playerIndex) => {
+		// lowest points at the end of round 9 wins'
+		const totalScores = calculateCurrentTotalScores();
+		const lowestScore = Math.min(...totalScores);
+		const winner = totalScores.indexOf(lowestScore);
+		return playerIndex === winner;
+	};
+
 	useEffect(() => {
 		const storedPlayers = localStorage.getItem("players");
 		const storedRoundData = localStorage.getItem("rounds");
@@ -109,33 +117,46 @@ export default function Home() {
 					<h1 className="text-3xl font-semibold text-slate-200">
 						Golf Card Game{" "}
 					</h1>
-					<span className=" font-semibold text-green-500 text-xs">
+					<span className=" font-semibold text-green-400 text-sm ">
 						{players.length < 2
 							? "Please add two or more players to begin"
 							: ""}
 					</span>
 					<div className="flex justify-start items-start mt-4">
 						<div className="mx-2 p-4 rounded shadow space-y-2 inline-flex flex-col bg-slate-900">
-							<div className="bg-slate-700 text-white p-2 text-xl rounded flex justify-center">
-								{round ? <span>Round {round}</span> : ""}
-							</div>
-							<div id="totalScores">
-								<h2 className="font-semibold text-slate-200 text-3xl underline">
-									Score:
-								</h2>
-								{calculateCurrentTotalScores().map(
-									(total, index) => (
-										<p
-											key={index}
-											className="text-lg text-slate-200 ">
-											<strong>
-												{players[index].name}
-											</strong>
-											: {total}
-										</p>
-									)
-								)}
-							</div>
+							{players.length < 1 ? (
+								"" // If there are no players, do not show the round
+							) : round ? (
+								<div className="bg-slate-700 text-white p-2 text-xl rounded flex justify-center ">
+									<span className="custom-animation">
+										Round {round}
+									</span>
+								</div>
+							) : (
+								""
+							)}
+
+							{players.length < 1 ? (
+								""
+							) : (
+								<div id="totalScores">
+									<h2 className="font-semibold text-slate-200 text-3xl underline">
+										Score:
+									</h2>
+									{calculateCurrentTotalScores().map(
+										(total, index) => (
+											<p
+												key={index}
+												className="text-lg text-slate-200 ">
+												<strong>
+													{players[index].name}
+												</strong>
+												: {total}
+											</p>
+										)
+									)}
+								</div>
+							)}
 							<button
 								className={`px-4 py-2 bg-blue-500 text-slate-900 rounded hover:bg-blue-600 text-2xl font-bold ${
 									players.length < 2
@@ -150,10 +171,6 @@ export default function Home() {
 										localStorage.setItem(
 											"players",
 											JSON.stringify(players)
-										);
-									} else {
-										alert(
-											"Please enter a score for each player before continuing..."
 										);
 									}
 								}}>
@@ -201,7 +218,7 @@ export default function Home() {
 											(_, index) => (
 												<input
 													key={index}
-													className="rounded shadow w-14 bg-slate-800 p-2"
+													className="rounded shadow w-14 bg-slate-800 p-2 custom-animation"
 													type="number"
 													placeholder={`R${
 														index + 1

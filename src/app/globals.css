@@ -5,3 +5,18 @@
 :root {
 	color-scheme: light dark;
 }
+
+@keyframes customAnimation {
+	0% {
+		opacity: 0;
+		transform: translateY(-20px);
+	}
+	100% {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+.custom-animation {
+	animation: customAnimation 1s ease-out 0.3s both; /* 1s duration, 0.3s delay */
+}
