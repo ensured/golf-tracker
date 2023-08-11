@@ -6,6 +6,9 @@ export default function Home() {
 	const [players, setPlayers] = useState([]);
 	const [round, setRound] = useState(1);
 
+	const browserHeight = window.innerHeight;
+	const browserWidth = window.innerWidth;
+
 	const handleAddPlayer = (playerName) => {
 		setPlayers((prevPlayers) => [
 			...prevPlayers,
