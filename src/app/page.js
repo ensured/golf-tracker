@@ -12,9 +12,9 @@ export default function Home() {
 		return string.charAt(0).toUpperCase() + string.slice(1);
 	}
 
-	const calculateCurrentTotalScores = useCallback(() => {
+	const calculateCurrentTotalScores = () => {
 		return players.map((player) => calculateTotalScore(player.scores));
-	}, [players]);
+	};
 
 	const isWinner = useCallback((playerIndex) => {
 		// lowest points at the end of round 9 wins'
