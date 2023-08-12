@@ -95,11 +95,10 @@ export default function Home() {
 
 	return (
 		<div
-			className={`p-2 flex flex-col flex-wrap justify-center items-center  h-screen w-screen overflow-auto ${
-				loading
-					? "bg-gradient-to-br from-slate-900 to-slate-600"
-					: "bg-gradient-to-br from-slate-900 to-slate-600"
-			}`}>
+			className={`p-2 flex flex-col flex-wrap justify-center items-center  h-screen w-screen overflow-auto ${loading
+				? "bg-gradient-to-br from-slate-900 to-slate-600"
+				: "bg-gradient-to-br from-slate-900 to-slate-600"
+				}`}>
 			{loading ? (
 				<div
 					className="flex bg-slate-800  p-16 rounded border-2 border-slate-200	opacity-100
@@ -139,30 +138,13 @@ export default function Home() {
 							{players.length < 1 ? (
 								""
 							) : (
-								<div id="totalScores">
-									<h2 className="font-semibold text-slate-200 text-3xl underline">
-										Score:
-									</h2>
-									{calculateCurrentTotalScores().map(
-										(total, index) => (
-											<p
-												key={index}
-												className="text-lg text-slate-200 ">
-												<strong>
-													{players[index].name}
-												</strong>
-												: {total}
-											</p>
-										)
-									)}
-								</div>
+								""
 							)}
 							<button
-								className={`px-4 py-2 bg-blue-500 text-slate-900 rounded hover:bg-blue-600 text-2xl font-bold ${
-									players.length < 2
-										? "hidden"
-										: "cursor-pointer"
-								}`}
+								className={`px-4 py-2 bg-blue-500 text-slate-900 rounded hover:bg-blue-600 text-2xl font-bold ${players.length < 2
+									? "hidden"
+									: "cursor-pointer"
+									}`}
 								onClick={() => {
 									// check if all of the users got a score for the current round
 									if (isRoundComplete()) {
@@ -177,9 +159,8 @@ export default function Home() {
 								Next Turn
 							</button>
 							<button
-								className={`px-4 py-2 bg-green-500 text-slate-900 font-bold rounded hover:bg-green-600 text-2xl ${
-									round < 2 ? "cursor-pointer" : "hidden"
-								}`}
+								className={`px-4 py-2 bg-green-500 text-slate-900 font-bold rounded hover:bg-green-600 text-2xl ${round < 2 ? "cursor-pointer" : "hidden"
+									}`}
 								onClick={() => {
 									if (round === 1) {
 										handleAddPlayer(
@@ -195,11 +176,10 @@ export default function Home() {
 							</button>
 							<button
 								onClick={handleReset}
-								className={`bg-red-500 text-slate-900 px-4 py-2 rounded hover:bg-red-600 text-2xl font-bold ${
-									players.length < 2
-										? "hidden"
-										: "cursor-pointer"
-								}`}>
+								className={`bg-red-500 text-slate-900 px-4 py-2 rounded hover:bg-red-600 text-2xl font-bold ${players.length < 2
+									? "hidden"
+									: "cursor-pointer"
+									}`}>
 								Reset Game
 							</button>
 						</div>
@@ -212,17 +192,22 @@ export default function Home() {
 									<span className="text-lg font-semibold mb-2 text-green-600 p-1 rounded">
 										{capitalizeFirstLetter(player.name)}{" "}
 									</span>
-									<div className="flex break-words flex-wrap space-x-1 justify-center items-center">
+									<div className="grid grid-cols-4 gap-2">
 										{Array.from(
 											{ length: round },
 											(_, index) => (
 												<input
 													key={index}
-													className="rounded shadow w-14 bg-slate-800 p-2 custom-animation mb-1"
+													className="rounded shadow bg-slate-800 p-1 custom-animation mb-1 animate-pulse"
 													type="text"
-													placeholder={`R${
-														index + 1
-													}`}
+													disabled={
+														round === 1 ||
+														index + 1 !== round
+													}
+
+
+													placeholder={`R${index + 1
+														}`}
 													value={
 														player.scores[index] ||
 														""
@@ -239,10 +224,10 @@ export default function Home() {
 											)
 										)}
 									</div>
-									{/* <p className="text-sm mt-2">
-								Total Score:{" "}
-								{calculateTotalScore(player.scores)}
-							</p> */}
+									<p className="text-sm mt-2">
+										Total Score:{" "}
+										{calculateTotalScore(player.scores)}
+									</p>
 								</div>
 							))}
 
