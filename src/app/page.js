@@ -55,6 +55,7 @@ export default function Home() {
 				isWinner(index)
 			);
 			const winnerMessage = "Game Over, the winner is " + players[winner].name;
+			alert(winnerMessage);
 			setRound(1);
 			setPlayers([]);
 		}
