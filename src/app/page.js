@@ -215,7 +215,7 @@ export default function Home() {
 												</span>
 
 											</span>
-											<div className="grid grid-cols-9 gap-1 text-center">
+											<div className="grid grid-cols-6 gap-1 text-center">
 												{Array.from(
 													{ length: round },
 													(_, index) => (
