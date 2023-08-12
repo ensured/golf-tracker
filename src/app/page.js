@@ -44,8 +44,17 @@ export default function Home() {
 	}, [players]);
 
 	useEffect(() => {
+		if (round === 10) {
+			const winner = players.findIndex((player, index) =>
+				isWinner(index)
+			);
+			alert("Game Over, the winner is " + players[winner].name);
+			setRound(1);
+			setPlayers([]);
+		}
+
 		localStorage.setItem("rounds", JSON.stringify({ currentRound: round }));
-	}, [round]);
+	}, [round, isWinner, players]);
 
 	const handleAddPlayer = (playerName) => {
 		if (!playerName) return;
@@ -96,18 +105,13 @@ export default function Home() {
 	return (
 		<div className="min-h-screen bg-slate-900">
 			<div
-				className={`p-2 flex flex-row flex-wrap justify-center items-center overflow-auto ${loading
-					? "bg-slate-900"
-					: "bg-slate-900"
-					}`}>
+				className={`p-2 flex flex-col flex-wrap justify-center items-center overflow-auto bg-slate-900`}>
 				{loading ? (
 					<div
 						className="flex bg-slate-800  p-16 rounded border-2 border-slate-200	opacity-100
 					animate-pulse">
 						<span
 							className="text-white text-3xl
-				
-					
 					">
 							Loading...
 						</span>
@@ -144,6 +148,10 @@ export default function Home() {
 										: "cursor-pointer"
 										}`}
 									onClick={() => {
+										if (round === 10) {
+
+
+										}
 										// check if all of the users got a score for the current round
 										if (isRoundComplete()) {
 											setRound((prevRound) => prevRound + 1);
@@ -154,7 +162,7 @@ export default function Home() {
 											);
 										}
 									}}>
-									Next Turn
+									{round < 10 ? "Next Round" : "Finish Game"}
 								</button>
 								<button
 									className={`p-3 bg-green-500 text-slate-900 font-bold rounded hover:bg-green-600 text-2xl ${round < 2 ? "cursor-pointer" : "hidden"
@@ -183,51 +191,65 @@ export default function Home() {
 							</div>
 
 							<div className="flex flex-col items-start justify-center rounded shadow bg-slate-900">
-								{players.map((player, playerIndex) => (
-									<div
-										key={playerIndex}
-										className="p-2 rounded shadow text-lg m-4 border-b-2 border-slate-700">
-										<span className="text-lg font-semibold mb-2 text-slate-50 p-1 rounded">
-											{capitalizeFirstLetter(player.name)}{" "}
-											<span className="text-md mt-2 text-green-600">
-												Total Score:{" "}
-												{calculateTotalScore(player.scores)}
+								{players.map((player, playerIndex) => {
+
+									const isLeader = isWinner(playerIndex);
+									return (
+										<div
+											key={playerIndex}
+											className="p-2 rounded shadow text-lg m-4 border-b-2 border-slate-700">
+
+											<span className="text-lg font-semibold mb-2 text-purple-600 p-1 rounded">
+
+												{capitalizeFirstLetter(player.name)}{" "}
+												{isLeader && (
+													<span className="relative top-0 text-3xl"
+													>
+														👑
+													</span>
+												)}
+
+												<span className="text-md mt-2 text-slate-100">
+													Total Score:{" "}
+													{calculateTotalScore(player.scores)}
+												</span>
+
 											</span>
-										</span>
-										<div className="grid grid-cols-9 gap-2">
-											{Array.from(
-												{ length: round },
-												(_, index) => (
-													<input
-														key={index}
-														disabled={
-															round === 1 ? false : index + 1 === round
-																? false : true
-														}
+											<div className="grid grid-cols-9 gap-1 text-center">
+												{Array.from(
+													{ length: round },
+													(_, index) => (
+														<input
+															key={index}
+															disabled={
+																round === 1 ? false : index + 1 === round
+																	? false : true
+															}
 
-														className="p-1 rounded shadow bg-slate-800 text-center custom-animation"
-														type="text"
-														placeholder={`R${index + 1
-															}`}
-														value={
-															player.scores[index] ||
-															""
-														}
-														onChange={(e) =>
-															handleScoreChange(
-																playerIndex,
-																parseInt(
-																	e.target.value
+															className="t rounded shadow bg-slate-800 text-center custom-animation"
+															type="number"
+															placeholder={`R${index + 1
+																}`}
+															value={
+																player.scores[index] ||
+																""
+															}
+															onChange={(e) =>
+																handleScoreChange(
+																	playerIndex,
+																	parseInt(
+																		e.target.value
+																	)
 																)
-															)
-														}
-													/>
-												)
-											)}
-										</div>
+															}
+														/>
+													)
+												)}
+											</div>
 
-									</div>
-								))}
+										</div>
+									);
+								})}
 
 								<DraggableDialog // Render your Modal component
 									open={showResetModal}
