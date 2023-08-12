@@ -138,7 +138,23 @@ export default function Home() {
 							{players.length < 1 ? (
 								""
 							) : (
-								""
+								<div id="totalScores">
+									<h2 className="font-semibold text-slate-200 text-3xl underline">
+										Score:
+									</h2>
+									{calculateCurrentTotalScores().map(
+										(total, index) => (
+											<p
+												key={index}
+												className="text-lg text-slate-200 ">
+												<strong>
+													{players[index].name}
+												</strong>
+												: {total}
+											</p>
+										)
+									)}
+								</div>
 							)}
 							<button
 								className={`px-4 py-2 bg-blue-500 text-slate-900 rounded hover:bg-blue-600 text-2xl font-bold ${players.length < 2
@@ -192,20 +208,14 @@ export default function Home() {
 									<span className="text-lg font-semibold mb-2 text-green-600 p-1 rounded">
 										{capitalizeFirstLetter(player.name)}{" "}
 									</span>
-									<div className="grid grid-cols-4 gap-2">
+									<div className="grid grid-cols-6 gap-1">
 										{Array.from(
 											{ length: round },
 											(_, index) => (
 												<input
 													key={index}
-													className="rounded shadow bg-slate-800 p-1 custom-animation mb-1 animate-pulse"
+													className="rounded shadow w-14 bg-slate-800 p-2 custom-animation mb-1"
 													type="text"
-													disabled={
-														round === 1 ||
-														index + 1 !== round
-													}
-
-
 													placeholder={`R${index + 1
 														}`}
 													value={
@@ -224,10 +234,10 @@ export default function Home() {
 											)
 										)}
 									</div>
-									<p className="text-sm mt-2">
-										Total Score:{" "}
-										{calculateTotalScore(player.scores)}
-									</p>
+									{/* <p className="text-sm mt-2">
+								Total Score:{" "}
+								{calculateTotalScore(player.scores)}
+							</p> */}
 								</div>
 							))}
 
