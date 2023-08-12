@@ -122,11 +122,11 @@ export default function Home() {
 							: ""}
 					</span>
 					<div className="flex justify-start items-start mt-4">
-						<div className="mx-2 p-4 rounded shadow space-y-2 inline-flex flex-col bg-slate-900">
+						<div className="text-center mx-2 p-4 rounded shadow space-y-2 inline-flex flex-col bg-slate-900">
 							{players.length < 1 ? (
 								"" // If there are no players, do not show the round
 							) : round ? (
-								<div className="bg-slate-700 text-white p-2 text-xl rounded flex justify-center ">
+								<div className="bg-slate-700 text-slate-50 p-1 text-xl rounded">
 									<span className="custom-animation">
 										Round {round}
 									</span>
@@ -138,23 +138,7 @@ export default function Home() {
 							{players.length < 1 ? (
 								""
 							) : (
-								<div id="totalScores">
-									<h2 className="font-semibold text-slate-200 text-3xl underline">
-										Score:
-									</h2>
-									{calculateCurrentTotalScores().map(
-										(total, index) => (
-											<p
-												key={index}
-												className="text-lg text-slate-200 ">
-												<strong>
-													{players[index].name}
-												</strong>
-												: {total}
-											</p>
-										)
-									)}
-								</div>
+								""
 							)}
 							<button
 								className={`px-4 py-2 bg-blue-500 text-slate-900 rounded hover:bg-blue-600 text-2xl font-bold ${players.length < 2
@@ -175,7 +159,7 @@ export default function Home() {
 								Next Turn
 							</button>
 							<button
-								className={`px-4 py-2 bg-green-500 text-slate-900 font-bold rounded hover:bg-green-600 text-2xl ${round < 2 ? "cursor-pointer" : "hidden"
+								className={` bg-green-500 text-slate-900 font-bold rounded hover:bg-green-600 text-2xl ${round < 2 ? "cursor-pointer" : "hidden"
 									}`}
 								onClick={() => {
 									if (round === 1) {
@@ -204,17 +188,26 @@ export default function Home() {
 							{players.map((player, playerIndex) => (
 								<div
 									key={playerIndex}
-									className="p-2 rounded shadow bg-slate-900 mb-2">
-									<span className="text-lg font-semibold mb-2 text-green-600 p-1 rounded">
+									className="p-2 rounded shadow text-lg m-4 border-b-2 border-slate-700">
+									<span className="text-lg font-semibold mb-2 text-slate-50 p-1 rounded">
 										{capitalizeFirstLetter(player.name)}{" "}
+										<span className="text-md mt-2 text-green-600">
+											Total Score:{" "}
+											{calculateTotalScore(player.scores)}
+										</span>
 									</span>
-									<div className="grid grid-cols-6 gap-1">
+									<div className="grid grid-cols-9 gap-2">
 										{Array.from(
 											{ length: round },
 											(_, index) => (
 												<input
 													key={index}
-													className="rounded shadow w-14 bg-slate-800 p-2 custom-animation mb-1"
+													disabled={
+														round === 1 ? false : index + 1 === round
+															? false : true
+													}
+
+													className="p-1 rounded shadow bg-slate-800 text-center custom-animation"
 													type="text"
 													placeholder={`R${index + 1
 														}`}
@@ -234,10 +227,7 @@ export default function Home() {
 											)
 										)}
 									</div>
-									{/* <p className="text-sm mt-2">
-								Total Score:{" "}
-								{calculateTotalScore(player.scores)}
-							</p> */}
+
 								</div>
 							))}
 
