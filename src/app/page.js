@@ -1,6 +1,6 @@
 "use client";
 import DraggableDialog from "./modal";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 export default function Home() {
 	const [loading, setLoading] = useState(true);
@@ -12,13 +12,13 @@ export default function Home() {
 		return string.charAt(0).toUpperCase() + string.slice(1);
 	}
 
-	const isWinner = (playerIndex) => {
+	const isWinner = useCallback((playerIndex) => {
 		// lowest points at the end of round 9 wins'
 		const totalScores = calculateCurrentTotalScores();
 		const lowestScore = Math.min(...totalScores);
 		const winner = totalScores.indexOf(lowestScore);
 		return playerIndex === winner;
-	};
+	}, [calculateCurrentTotalScores]);
 
 	useEffect(() => {
 		const storedPlayers = localStorage.getItem("players");
@@ -48,13 +48,16 @@ export default function Home() {
 			const winner = players.findIndex((player, index) =>
 				isWinner(index)
 			);
-			alert("Game Over, the winner is " + players[winner].name);
+			const winnerMessage = "Game Over, the winner is " + players[winner].name;
+			showMessage(winnerMessage);
 			setRound(1);
 			setPlayers([]);
 		}
 
 		localStorage.setItem("rounds", JSON.stringify({ currentRound: round }));
 	}, [round, isWinner, players]);
+
+
 
 	const handleAddPlayer = (playerName) => {
 		if (!playerName) return;
@@ -162,7 +165,7 @@ export default function Home() {
 											);
 										}
 									}}>
-									{round < 10 ? "Next Round" : "Finish Game"}
+									{round === 9 ? "Finish Game" : "Next Round"}
 								</button>
 								<button
 									className={`p-3 bg-green-500 text-slate-900 font-bold rounded hover:bg-green-600 text-2xl ${round < 2 ? "cursor-pointer" : "hidden"
