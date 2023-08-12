@@ -226,7 +226,7 @@ export default function Home() {
 																	? false : true
 															}
 
-															className="t rounded shadow bg-slate-800 text-center custom-animation"
+															className=" rounded shadow bg-slate-800 text-center custom-animation"
 															type="number"
 															placeholder={`R${index + 1
 																}`}
