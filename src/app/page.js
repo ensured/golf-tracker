@@ -12,6 +12,10 @@ export default function Home() {
 		return string.charAt(0).toUpperCase() + string.slice(1);
 	}
 
+	const calculateCurrentTotalScores = useCallback(() => {
+		return players.map((player) => calculateTotalScore(player.scores));
+	}, [players]);
+
 	const isWinner = useCallback((playerIndex) => {
 		// lowest points at the end of round 9 wins'
 		const totalScores = calculateCurrentTotalScores();
@@ -85,9 +89,7 @@ export default function Home() {
 		return playerScores.reduce((total, score) => total + (score || 0), 0);
 	};
 
-	const calculateCurrentTotalScores = () => {
-		return players.map((player) => calculateTotalScore(player.scores));
-	};
+
 
 	const handleReset = () => {
 		setShowResetModal(true); // Show the reset modal
