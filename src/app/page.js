@@ -108,7 +108,7 @@ export default function Home() {
 				className={`p-2 flex flex-col flex-wrap justify-center items-center overflow-auto bg-slate-900`}>
 				{loading ? (
 					<div
-						className="flex bg-slate-800  p-16 rounded border-2 border-slate-200	opacity-100
+						className="flex bg-slate-800  p-16 rounded -2 border-slate-200	opacity-100
 					animate-pulse">
 						<span
 							className="text-white text-3xl
@@ -123,8 +123,8 @@ export default function Home() {
 								? "Please add two or more players to begin"
 								: ""}
 						</span>
-						<div className="flex justify-start items-start mt-4">
-							<div className="text-center mx-2 p-4 rounded shadow space-y-2 inline-flex flex-col bg-slate-900">
+						<div className="flex">
+							<div className="text-center rounded shadow space-y-2 inline-flex flex-col">
 								{players.length < 1 ? (
 									"" // If there are no players, do not show the round
 								) : round ? (
@@ -190,26 +190,26 @@ export default function Home() {
 								</button>
 							</div>
 
-							<div className="flex flex-col items-start justify-center rounded shadow bg-slate-900">
+							<div className="flex flex-col rounded shadow bg-slate-900">
 								{players.map((player, playerIndex) => {
 
 									const isLeader = isWinner(playerIndex);
 									return (
 										<div
 											key={playerIndex}
-											className="p-2 rounded shadow text-lg m-4 border-b-2 border-slate-700">
+											className="p-2 rounded shadow text-lg bg-slate-950 mb-1 ml-2">
 
 											<span className="text-lg font-semibold mb-2 text-purple-600 p-1 rounded">
 
 												{capitalizeFirstLetter(player.name)}{" "}
 												{isLeader && (
-													<span className="relative top-0 text-3xl"
+													<span className="relative text-2xl"
 													>
 														👑
 													</span>
 												)}
 
-												<span className="text-md mt-2 text-slate-100">
+												<span className="text-md text-slate-100">
 													Total Score:{" "}
 													{calculateTotalScore(player.scores)}
 												</span>
